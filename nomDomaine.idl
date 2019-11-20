@@ -1,0 +1,40 @@
+module nomDomaine {
+
+  exception ExisteDeja {
+    string nomDomaine;
+  };
+  exception ExistePas {
+    string destinataire;
+  };
+  exception SommeInsufisante{
+    string somme;
+  };
+
+  typedef sequence<string> resDNS;
+  typedef sequence<string> listeRegistrars;
+
+  interface intRegDNS{
+    resDNS resolution(in string nomDomaine);
+    resDNS resolutionWhois(in string nomDomaine);
+  };
+
+  interface intDelDNS{
+    listeRegistrars demandeListe();
+  };
+
+  interface intBanque{
+    void prelevementCompte(in string source, in string destinataire, in short somme) raises (ExistePas, SommeInsufisante);
+    boolean verificationPrelevement(in short somme,in string compte);
+  };
+
+  interface intDelClient{
+    listeRegistrars demandeListe();
+  };
+
+  interface intRegClient{
+    void locationDomaine(in string nomDomaine, in short dureeAbo) raises (ExisteDeja);
+    string envoiInfo(in string facture, in short id);
+    void selectionRegistrar(in string nomRegistrar);
+    void communiqueCodeSecret(in short codeSecret);
+  };
+};
